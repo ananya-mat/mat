@@ -7,6 +7,7 @@ clc;
 %fprintf("My matrix got printed!")
 %fprintf("\n")
 h=isprime(45);
+disp(h);
 g=primes(69);
 ff = factorial(56);
-t=exp(12)
+t=exp(12);
