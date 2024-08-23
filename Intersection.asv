@@ -1,13 +1,15 @@
 clc;
 a=[1 -4; 1 8;1 0;0 1];
 b=[-29; 77;0;0];
-c=[3;-2];
+c=[3 -2];
 
-%x1 = 0:0.1:max(b);
-%x21 = b(1) - a(1,1)* x1/a(1,2);
-%x22 = b(2) - a(2,1)* x1/a(2,2);
-%x23 = b(3) - a(3,1)* x1/a(3,2);
-%x24 = b(4) - a(4,1)* x1/a(4,2);
+x1 = 0:0.1:500;
+x21 = b(1) - a(1,1)* x1/a(1,2);
+x22 = b(2) - a(2,1)* x1/a(2,2);
+x23 = b(3) - a(3,1)* x1/a(3,2);
+x24 = b(4) - a(4,1)* x1/a(4,2);
+plot(x1, x21, 'r-', x1,x22, 'r-', x1, x23, 'r-', x1, x24, 'r-');
+
 sol = [];
 for i=1:length(a)
     a1=a(i,:);
@@ -22,6 +24,7 @@ for i=1:length(a)
     end 
 end
 
+fprintf("Solution:\n")
 disp(sol);
 
 obj = [];
@@ -48,8 +51,14 @@ sol(:, C4) = [];
 X1 = sol(1,:);
 X2 = sol(2,:);
 sol = sol';
+fprintf("Solution in Constraints:\n")
 disp(sol);
 
 for i=1:length(sol)
     obj(i) = sum(sol(i,:).*c);
 end
+[m, loc] = max(obj);
+os = sol(loc,:);
+fprintf("The optimal sol:\n");
+disp(os);
+fprintf("Max Value = %f\n", m);
