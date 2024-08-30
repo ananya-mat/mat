@@ -20,3 +20,7 @@ else
 end
 
 disp(sol);
+z=c*sol;
+[val, loc] = max(z);
+disp(sol(:, loc))
+fprintf("the value is %f\n", val);
