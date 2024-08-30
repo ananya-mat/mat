@@ -1,0 +1,10 @@
+clc;
+a = [-1 4; 0 1; 1 8; 0 1];
+b =[2 9; 7 7];
+c = [3 -2;0 0];
+[m,n] = size(a);
+if(n>m)
+    ncm = nchoosek(n,m);
+    pair = nchoosek(1:n,m);
+    for i=1:ncm
+        
