@@ -1,0 +1,56 @@
+clc;
+clear all
+format short;
+C = [2 5];
+a = [1 4;3 1;1 1];
+b = [24; 21; 9];
+[m,n] = size(a);
+s = eye(m);
+A = [a s b];
+cost = zeros(1, n+m+1);
+cost(1:n) = C;
+bv = n+1:1:n+m;
+display(bv);
+
+zjcj = cost(bv) * A - cost;
+zcj = [zjcj; A];
+simpletable = array2table(zcj);
+simpletable.Properties.VariableNames(1:n+m+1) = {'x_1', 'x_2', 's_1', 's_2', 's_3', 'sol'};
+flag = true;
+
+while flag
+    if any(zjcj < 0)
+        fprintf('the current BFS is not optimal \n');
+        zc = zjcj(1:end-1);
+        [Enter_val, pvt_col] = min(zc);
+        if all(A(:, pvt_col) <= 0)
+            error('LPP is Unbounded all enteries are <=0 in column %d', pvt_col);
+        else
+            sol = A(:, end)
+            column=A(:, pvt_col)
+            for i=1:m
+                if column(i) > 0
+                    ratio(i) = sol(i)./column(i)
+                else
+                    ratio(i) = inf
+                end
+            end
+            [leaving_val, pvt_row] = min(ratio)
+        end
+        bv(pvt_row) = pvt_col;
+        pvt_key = A(pvt_row, pvt_col);
+        A(pvt_row, :) = A(pvt_row,:)./pvt_key;
+        for i=1:m
+            if i==pvt_row
+                A(i, :) = A(i, :)-A(i, pvt_col).*A(pvt_row,:);
+            end
+        end
+        zjcj = zjcj-zjcj(pvt_col).*A(pvt_row, :);
+        zcj = [zjcj;A];
+        table = array2table(zcj);
+        table.Properties.VariableNames(1:n+m+1) = {'x_1', 'x_2', 's_1', 's_2', 's_3', 'sol'}
+    else
+        flag = false;
+        fprintf('The current BFS is optimal \n')
+    end
+end
